@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jihad Alshhab | Al-Shhab Cyber Security</title>
+    <!-- استدعاء خطوط برمجية حادة -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030712;
+            --card-bg: #0b0f19;
+            --primary-green: #00ff66;
+            --text-color: #e5e7eb;
+            --dim-text: #9ca3af;
+            --border-color: rgba(0, 255, 102, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Share Tech Mono', 'Fira Code', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(rgba(0, 255, 102, 0.08) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        .terminal-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Terminal Bar */
+        .terminal-header {
+            background-color: #111827;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .red { background-color: #ef4444; }
+        .yellow { background-color: #f59e0b; }
+        .green { background-color: #10b981; }
+
+        .terminal-title {
+            color: var(--dim-text);
+            font-size: 0.85rem;
+        }
+
+        /* Terminal Body */
+        .terminal-body {
+            padding: 30px;
+        }
+
+        .brand-header {
+            color: var(--primary-green);
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cmd-line {
+            color: var(--primary-green);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .typing-container {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 15px 0 20px 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            color: var(--text-color);
+        }
+
+        .green-text { color: var(--primary-green); }
+        .code-tag { color: #3b82f6; }
+
+        /* Cursor Effect */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.6rem;
+            background-color: var(--primary-green);
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(0, 255, 102, 0.1);
+            color: var(--primary-green);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        /* Social Links Grid */
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgba(0, 255, 102, 0.02);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-green);
+            color: var(--bg-color);
+            border-color: var(--primary-green);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            color: var(--dim-text);
+            font-size: 0.8rem;
+            margin-top: 30px;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        <!-- شريط التيرمينال العلوي -->
+        <div class="terminal-header">
+            <div class="buttons">
+                <span class="btn-dot red"></span>
+                <span class="btn-dot yellow"></span>
+                <span class="btn-dot green"></span>
+            </div>
+            <div class="terminal-title">jihad@alshhab-cybersec:~</div>
+        </div>
+
+        <!-- محتوى التيرمينال -->
+        <div class="terminal-body">
+            <div class="brand-header">
+                <span>🛡️ Al-Shhab Cyber Security</span>
+                <span style="font-size: 0.8rem; color: var(--dim-text);">v2.0.26</span>
+            </div>
+
+            <div class="cmd-line">&gt; init_session --user jihad_alshhab</div>
+            
+            <!-- تأثير الكتابة -->
+            <div class="typing-container">
+                <span id="welcome-text"></span>
+                <span id="name-text" class="green-text"></span>
+                <span id="code-text" class="code-tag"></span>
+                <span id="cursor" class="cursor"></span>
+            </div>
+
+            <div class="status-badge">[SYSTEM STATUS: ENCRYPTED & ONLINE]</div>
+
+            <div class="cmd-line">&gt; fetch_contact_endpoints.sh</div>
+            
+            <!-- شبكة روابط التواصل -->
+            <div class="social-links">
+                <a href="mailto:sihahbj@gmail.com" class="btn">
+                    📧 Email
+                </a>
+                <a href="https://wa.me/+966560960597" target="_blank" class="btn">
+                    💬 WhatsApp
+                </a>
+                <a href="https://github.com/JihadAlshhab" target="_blank" class="btn">
+                    💻 GitHub
+                </a>
+                <a href="https://www.facebook.com/share/1bj3nnqGn6/" target="_blank" class="btn">
+                    🌐 Facebook
+                </a>
+                <a href="https://www.instagram.com/jihad_alshhab?stkn=MWRwMjgzbGdscHJucQ==" target="_blank" class="btn">
+                    📸 Instagram
+                </a>
+            </div>
+
+            <footer>
+                <p>[+] Secured by Al-Shhab Cyber Security | Jihad Alshhab &copy; 2026</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- تأثير الكتابة مع صوت الكيبورد -->
+    <script>
+        const welcomeStr = "Welcome ";
+        const nameStr = "Jihad Alshhab ";
+        const codeStr = "</>";
+
+        const welcomeEl = document.getElementById("welcome-text");
+        const nameEl = document.getElementById("name-text");
+        const codeEl = document.getElementById("code-text");
+        const cursorEl = document.getElementById("cursor");
+
+        // إنشاء محاكاة صوت نقرة الكيبورد باستعمال Web Audio API (بدون الحاجة لملف صوتي خارجي)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playKeyClick() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400 + Math.random() * 200, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.04);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
+
+        function typeWriter(text, element, speed, callback) {
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    playKeyClick(); // تشغيل صوت النقرة مع كل حرف
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        window.onload = function() {
+            typeWriter(welcomeStr, welcomeEl, 70, function() {
+                typeWriter(nameStr, nameEl, 70, function() {
+                    typeWriter(codeStr, codeEl, 90, function() {
+                        cursorEl.style.display = "none";
+                    });
+                });
+            });
+        };
+    </script>
+
+</body>
+</html>
