@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>شركة النخبة — متجر إلكتروني</title>
+<style>
+  :root {
+    --bg: #0b0f17;
+    --card: #121826;
+    --card-2: #172033;
+    --text: #f3f6fb;
+    --muted: #9aa7bd;
+    --accent: #38bdf8;
+    --accent-2: #22c55e;
+    --warn: #f59e0b;
+    --border: rgba(255,255,255,0.08);
+    --shadow: 0 10px 24px rgba(0,0,0,0.35);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  header {
+    background: #0e1420;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), #2563eb);
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    color: #06101d;
+    font-size: 1rem;
+  }
+  .brand h1 { margin: 0; font-size: 1.1rem; }
+  .brand small { color: var(--muted); display: block; font-size: 0.75rem; }
+  .controls {
+    max-width: 1200px;
+    margin: 10px auto 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+  @media (max-width: 640px) {
+    .controls { grid-template-columns: 1fr; }
+  }
+  .search-box, select {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .tabs {
+    max-width: 1200px;
+    margin: 10px auto 0;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .tab {
+    background: var(--card);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    white-space: nowrap;
+  }
+  .tab.active {
+    background: var(--accent);
+    color: #06101d;
+    border-color: transparent;
+    font-weight: 700;
+  }
+  main {
+    max-width: 1200px;
+    margin: 14px auto 40px;
+    padding: 0 14px;
+  }
+  .summary-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: var(--shadow);
+  }
+  .meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+  .tag {
+    background: rgba(56, 189, 248, 0.14);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .title { margin: 6px 0 4px; font-size: 0.98rem; font-weight: 700; }
+  .desc { margin: 0; color: var(--muted); font-size: 0.85rem; }
+  .price-box {
+    background: var(--card-2);
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .price-usd { font-size: 1.15rem; font-weight: 800; color: var(--accent-2); }
+  .price-old-note { font-size: 0.75rem; color: var(--warn); text-decoration: line-through; margin-inline-start: 4px; }
+  .price-syp { font-size: 0.75rem; color: var(--muted); }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  button.btn, a.btn {
+    border: none;
+    border-radius: 9px;
+    padding: 8px 10px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-details { background: var(--card-2); color: var(--text); border: 1px solid var(--border); }
+  .btn-wa { background: #22c55e; color: #052e16; }
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    z-index: 60;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 520px;
+    width: 100%;
+    padding: 18px;
+    max-height: 86vh;
+    overflow-y: auto;
+  }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .modal-head h2 { margin: 0; font-size: 1.05rem; }
+  .close-btn { background: var(--card-2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+  .spec-list { margin: 10px 0; padding-inline-start: 18px; font-size: 0.9rem; }
+  .spec-list li { margin-bottom: 5px; }
+  .modal-footer { display: flex; gap: 8px; margin-top: 14px; }
+  .toast {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    z-index: 80;
+    display: none;
+  }
+  .toast.show { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-badge">ن</div>
+      <div>
+        <h1>شركة النخبة</h1>
+        <small>لابتوبات • تدفئة وتوابعها • غسالات (42 منتج)</small>
+      </div>
+    </div>
+    <div style="font-size:0.78rem;color:var(--muted);">~15,200 ل.س قديمة/$</div>
+  </div>
+
+  <div class="controls">
+    <input id="searchInput" class="search-box" type="search" placeholder="ابحث باسم المنتج، الماركة، السعة أو المواصفات..." />
+    <select id="sortSelect" aria-label="ترتيب المنتجات">
+      <option value="default">الترتيب الافتراضي (#1 إلى #42)</option>
+      <option value="price-asc">السعر: من الأقل إلى الأعلى</option>
+      <option value="price-desc">السعر: من الأعلى إلى الأقل</option>
+    </select>
+  </div>
+
+  <div class="tabs" id="categoryTabs">
+    <button class="tab active" data-cat="all">الكل (42)</button>
+    <button class="tab" data-cat="laptops">اللابتوبات (13)</button>
+    <button class="tab" data-cat="heating">التدفئة وتوابعها (16)</button>
+    <button class="tab" data-cat="washers">الغسالات (13)</button>
+  </div>
+</header>
+
+<main>
+  <div class="summary-bar">
+    <span id="resultCount">عرض 42 منتجاً</span>
+    <span>للطلب الفوري: اضغط "اطلب الآن"</span>
+  </div>
+  <div class="grid" id="productsGrid"></div>
+</main>
+
+<div class="modal-backdrop" id="detailModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modalTitle">تفاصيل المنتج</h2>
+      <button class="close-btn" id="closeModal">✕</button>
+    </div>
+    <div id="modalMeta" style="font-size:0.82rem;color:var(--muted);margin-top:6px;"></div>
+    <ul class="spec-list" id="modalSpecs"></ul>
+    <div id="modalPriceBox" class="price-box"></div>
+    <div class="modal-footer">
+      <button class="btn btn-details" id="copyInfoBtn">نسخ المواصفات</button>
+      <a class="btn btn-wa" id="modalWaBtn" target="_blank" rel="noopener">اطلب عبر واتساب</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var WHATSAPP_PHONE = "966574130000";
+var SYP_APPROX_RATE = 15200;
+
+var PRODUCTS = [
+  { id: 1, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب HP ProBook — فئة الأعمال", price: 185, oldPrice: null, short: "لابتوب HP ProBook عملي للأعمال والدراسة والتصفح اليومي بسعر 185$.", specs: ["الماركة: HP ProBook", "الاستخدام: دراسة، مكتب، تصفح، وبرامج يومية", "السعر: 185$"] },
+  { id: 2, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Dell Latitude — أداء مستقر", price: 175, oldPrice: null, short: "لابتوب Dell Latitude متين ومناسب للعمل المكتبي والدراسة، بسعر 175$.", specs: ["الماركة: Dell Latitude", "الاستخدام: أعمال مكتبية وتعليم وتطبيقات يومية", "السعر: 175$"] },
+  { id: 3, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Lenovo ThinkPad — متانة عالية", price: 195, oldPrice: null, short: "لابتوب Lenovo ThinkPad معروف بالاعتمادية ولوحة المفاتيح المريحة، بسعر 195$.", specs: ["الماركة: Lenovo ThinkPad", "الاستخدام: برمجة، دراسة، وإدارة أعمال", "السعر: 195$"] },
+  { id: 4, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب HP EliteBook — تصميم أنيق", price: 210, oldPrice: null, short: "لابتوب HP EliteBook بتصميم أنيق وأداء سريع للمهام المتعددة، بسعر 210$.", specs: ["الماركة: HP EliteBook", "الاستخدام: مهام متعددة وعروض وعمل يومي", "السعر: 210$"] },
+  { id: 5, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Dell Inspiron — استخدام يومي", price: 165, oldPrice: null, short: "لابتوب Dell Inspiron مناسب للدراسة والتصفح والمشاهدة، بسعر 165$.", specs: ["الماركة: Dell Inspiron", "الاستخدام: تصفح، أوفيس، ودراسة", "السعر: 165$"] },
+  { id: 6, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Acer Aspire — عملي واقتصادي", price: 155, oldPrice: null, short: "لابتوب Acer Aspire خيار اقتصادي عملي للطلاب والاستخدام اليومي، بسعر 155$.", specs: ["الماركة: Acer Aspire", "الاستخدام: مهام يومية ودراسية", "السعر: 155$"] },
+  { id: 7, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Toshiba Tecra — تحمّل عالي", price: 150, oldPrice: null, short: "لابتوب Toshiba Tecra مصمم للتحمل والعمل المكتبي المستمر، بسعر 150$.", specs: ["الماركة: Toshiba Tecra", "الاستخدام: إدخال بيانات ومحاسبة وتصفح", "السعر: 150$"] },
+  { id: 8, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Lenovo IdeaPad — عصري ومريح", price: 180, oldPrice: null, short: "لابتوب Lenovo IdeaPad بتصميم عصري مناسب للطلاب والعمل اليومي، بسعر 180$.", specs: ["الماركة: Lenovo IdeaPad", "الاستخدام: دراسة، تصفح، وبرامج مكتبية", "السعر: 180$"] },
+  { id: 9, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب HP Pavilion — ترفيه وأداء", price: 205, oldPrice: null, short: "لابتوب HP Pavilion يجمع بين الأداء الجيد والترفيه اليومي، بسعر 205$.", specs: ["الماركة: HP Pavilion", "الاستخدام: وسائط، دراسة، وتطبيقات يومية", "السعر: 205$"] },
+  { id: 10, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Dell Precision — محطة عمل", price: 240, oldPrice: null, short: "لابتوب Dell Precision مناسب للأعمال الثقيلة والتصميم والهندسة، بسعر 240$.", specs: ["الماركة: Dell Precision", "الاستخدام: تطبيقات هندسية وتصميمية ومهام متقدمة", "السعر: 240$"] },
+  { id: 11, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب Fujitsu Lifebook — موثوقية عالية", price: 160, oldPrice: null, short: "لابتوب Fujitsu Lifebook عملي وموثوق للعمل والدراسة، بسعر 160$.", specs: ["الماركة: Fujitsu Lifebook", "الاستخدام: مهام مكتبية ودراسية يومية", "السعر: 160$"] },
+  { id: 12, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب ASUS VivoBook — خفيف وسريع", price: 190, oldPrice: null, short: "لابتوب ASUS VivoBook خفيف الوزن ومناسب للتنقل والدراسة، بسعر 190$.", specs: ["الماركة: ASUS VivoBook", "الاستخدام: دراسة، تنقل، ومهام يومية", "السعر: 190$"] },
+  { id: 13, cat: "laptops", dept: "اللابتوبات", sub: "لابتوب مستعمل", name: "لابتوب HP 250 / سلسلة عملية", price: 170, oldPrice: null, short: "لابتوب HP عملي بشاشة مريحة للاستخدام اليومي والدراسة، بسعر 170$.", specs: ["الماركة: HP", "الاستخدام: دراسة، تصفح، وأعمال خفيفة", "السعر: 170$"] },
+
+  { id: 14, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة مازوت / وقود منزلية #1", price: 85, oldPrice: null, short: "مدفأة منزلية عملية لتدفئة الغرف خلال فصل الشتاء، بسعر 85$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 85$"] },
+  { id: 15, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #2", price: 95, oldPrice: null, short: "مدفأة تدفئة عملية بتوزيع حراري جيد للمساحات المتوسطة، بسعر 95$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 95$"] },
+  { id: 16, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #3", price: 75, oldPrice: null, short: "مدفأة اقتصادية مناسبة للغرف الصغيرة والمتوسطة، بسعر 75$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 75$"] },
+  { id: 17, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #4", price: 110, oldPrice: null, short: "مدفأة قوية لتدفئة الصالات والغرف الواسعة، بسعر 110$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 110$"] },
+  { id: 18, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #5", price: 80, oldPrice: null, short: "مدفأة عملية وسهلة الاستخدام للاستخدام الشتوي اليومي، بسعر 80$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 80$"] },
+  { id: 19, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #6", price: 90, oldPrice: null, short: "مدفأة منزلية بتصميم عملي وأداء جيد، بسعر 90$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 90$"] },
+  { id: 20, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #7", price: 70, oldPrice: null, short: "مدفأة اقتصادية بسعر مناسب للتدفئة اليومية، بسعر 70$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 70$"] },
+  { id: 21, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #8", price: 105, oldPrice: null, short: "مدفأة عالية الكفاءة لتدفئة مريحة ومستمرة، بسعر 105$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 105$"] },
+  { id: 22, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #9", price: 65, oldPrice: null, short: "مدفأة خفيفة واقتصادية للمساحات الصغيرة، بسعر 65$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 65$"] },
+  { id: 23, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #10", price: 95, oldPrice: null, short: "مدفأة منزلية عملية بأداء دافئ ومستقر، بسعر 95$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 95$"] },
+  { id: 24, cat: "heating", dept: "التدفئة وتوابعها", sub: "مدافئ وتدفئة", name: "مدفأة تدفئة منزلية #11", price: 85, oldPrice: null, short: "مدفأة عملية مناسبة للاستخدام المنزلي الشتوي، بسعر 85$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 85$"] },
+  { id: 25, cat: "heating", dept: "التدفئة وتوابعها", sub: "مستلزمات التدفئة", name: "مستلزمات وتوابع تدفئة #12", price: 25, oldPrice: null, short: "مستلزم تدفئة عملي لتجهيز التدفئة المنزلية، بسعر 25$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 25$"] },
+  { id: 26, cat: "heating", dept: "التدفئة وتوابعها", sub: "مستلزمات التدفئة", name: "مستلزمات وتوابع تدفئة #13", price: 30, oldPrice: null, short: "مستلزم تدفئة عملي وداعم لأنظمة التدفئة، بسعر 30$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 30$"] },
+  { id: 27, cat: "heating", dept: "التدفئة وتوابعها", sub: "مستلزمات التدفئة", name: "مستلزمات وتوابع تدفئة #14", price: 20, oldPrice: null, short: "ملحق تدفئة اقتصادي وعملي، بسعر 20$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 20$"] },
+  { id: 28, cat: "heating", dept: "التدفئة وتوابعها", sub: "مستلزمات التدفئة", name: "مستلزمات وتوابع تدفئة #15", price: 35, oldPrice: null, short: "مستلزم تدفئة لتشغيل آمن ومريح، بسعر 35$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 35$"] },
+  { id: 29, cat: "heating", dept: "التدفئة وتوابعها", sub: "مستلزمات التدفئة", name: "مستلزمات وتوابع تدفئة #16", price: 40, oldPrice: null, short: "تجهيز إضافي لقسم التدفئة وتوابعها، بسعر 40$.", specs: ["القسم: التدفئة وتوابعها", "السعر: 40$"] },
+
+  { id: 30, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة أوتوماتيك أمامي #1", price: 140, oldPrice: null, short: "غسالة أوتوماتيك أمامي عملية وبرامج متنوعة، بسعر 140$.", specs: ["القسم: الغسالات ← أوتوماتيك أمامي", "السعر: 140$"] },
+  { id: 31, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة أوتوماتيك أمامي #2", price: 155, oldPrice: null, short: "غسالة أوتوماتيك أمامي بأداء جيد وبرامج متعددة، بسعر 155$.", specs: ["القسم: الغسالات ← أوتوماتيك أمامي", "السعر: 155$"] },
+  { id: 32, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة LG Intellowasher سعة 7 كغ (عرض خاص -30$)", price: 70, oldPrice: 100, short: "غسالة LG Intellowasher سعة 7 كغ بسعر نهائي 70$ بعد خصم 30$.", specs: ["الماركة والسعة: LG Intellowasher — 7 كغ", "السعر الأصلي التقديري: ~100$", "السعر النهائي: 70$"] },
+  { id: 33, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة أوتوماتيك أمامي #4", price: 130, oldPrice: null, short: "غسالة أوتوماتيك أمامي اقتصادية وعملية للعائلة، بسعر 130$.", specs: ["القسم: الغسالات ← أوتوماتيك أمامي", "السعر: 130$"] },
+  { id: 34, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة أوتوماتيك أمامي #5", price: 165, oldPrice: null, short: "غسالة أوتوماتيك أمامي بأداء موثوق وبرامج متنوعة، بسعر 165$.", specs: ["القسم: الغسالات ← أوتوماتيك أمامي", "السعر: 165$"] },
+  { id: 35, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة أوتوماتيك أمامي #6", price: 145, oldPrice: null, short: "غسالة أوتوماتيك أمامي مناسبة للاستخدام المنزلي، بسعر 145$.", specs: ["القسم: الغسالات ← أوتوماتيك أمامي", "السعر: 145$"] },
+  { id: 36, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي (غسالة ونشافة) | مستعملة", name: "غسالة ونشافة LG Direct Drive سعة 8/4 كغ (عنابية)", price: 200, oldPrice: null, short: "غسالة ونشافة LG Direct Drive سعة 8/4 كغ، شاشة ديجيتال وتصميم عنابي، بسعر 200$.", specs: ["الماركة والسعة: LG Direct Drive — 8/4 كغ", "التصميم: عنابي مزخرف مع باب بإطار معدني", "السعر: 200$"] },
+  { id: 37, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة LG 6 Motion DD سعة 7 كغ (A+++ -30%)", price: 200, oldPrice: null, short: "غسالة LG أوتوماتيك أمامي سعة 7 كغ بتقنية 6 Motion DD، بسعر 200$.", specs: ["الماركة والسعة: LG — 7 كغ", "الكفاءة: A+++ -30%", "السعر: 200$"] },
+  { id: 38, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة بروفيلو (PROFILO) سعة 6 كغ (1000 دورة)", price: 100, oldPrice: null, short: "غسالة بروفيلو سعة 6 كغ، 1000 دورة، غسيل سريع، بسعر 100$.", specs: ["الماركة والسعة: PROFILO — 6 كغ", "الدوران: 1000 دورة/دقيقة", "السعر: 100$"] },
+  { id: 39, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة DIGITAL ديجيتال سعة 8 كيلو", price: 65, oldPrice: null, short: "غسالة DIGITAL أوتوماتيك أمامي سعة 8 كغ، شاشة رقمية، بسعر 65$.", specs: ["الماركة والسعة: DIGITAL — 8 كيلو", "المزايا: شاشة رقمية وبرامج متعددة وAntiCalc", "السعر: 65$"] },
+  { id: 40, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة Starway ستار واي أوتوماتيك أمامي (1200 دورة - A+++)", price: 185, oldPrice: null, short: "غسالة Starway أوتوماتيك أمامي A+++ وسرعة 1200 دورة، بسعر 185$.", specs: ["الماركة: Starway", "الكفاءة: A+++، 1200 دورة", "السعر: 185$"] },
+  { id: 41, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة سامسونج (SAMSUNG) أوتوماتيك أمامي سعة 7.0 كغ", price: 120, oldPrice: null, short: "غسالة سامسونج أوتوماتيك أمامي سعة 7 كغ، شاشة رقمية، بسعر 120$.", specs: ["الماركة والسعة: SAMSUNG — 7.0 كغ", "التحكم: شاشة رقمية وقرص برامج", "السعر: 120$"] },
+  { id: 42, cat: "washers", dept: "الغسالات", sub: "أوتوماتيك أمامي | مستعملة", name: "غسالة وتار أوتوماتيك أمامي", price: 50, oldPrice: null, short: "غسالة وتار أوتوماتيك أمامي بتحكم ميكانيكي، خيار اقتصادي بسعر 50$.", specs: ["الماركة: وتار", "التحكم: ميكانيكي مع دليل برامج", "السعر: 50$"] }
+];
+
+var activeCat = "all";
+var grid = document.getElementById("productsGrid");
+var searchInput = document.getElementById("searchInput");
+var sortSelect = document.getElementById("sortSelect");
+var resultCount = document.getElementById("resultCount");
+var modal = document.getElementById("detailModal");
+var toast = document.getElementById("toast");
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(function() { toast.classList.remove("show"); }, 2000);
+}
+
+function approxOldSyp(usd) {
+  var val = Math.round((usd * SYP_APPROX_RATE) / 10000) * 10000;
+  return "~" + val.toLocaleString("en-US") + " ل.س قديمة";
+}
+
+function waUrl(p) {
+  var msg = "مرحباً شركة النخبة، أرغب بطلب المنتج رقم #" + p.id + ": " + p.name + " بسعر " + p.price + "$";
+  return "https://wa.me/" + WHATSAPP_PHONE + "?text=" + encodeURIComponent(msg);
+}
+
+function getFilteredProducts() {
+  var q = searchInput.value.trim().toLowerCase();
+  var list = PRODUCTS.filter(function(p) {
+    var catOk = activeCat === "all" || p.cat === activeCat;
+    var hay = (p.id + " " + p.name + " " + p.dept + " " + p.sub + " " + p.short + " " + p.specs.join(" ")).toLowerCase();
+    var qOk = !q || hay.indexOf(q) !== -1;
+    return catOk && qOk;
+  });
+
+  if (sortSelect.value === "price-asc") list.sort(function(a, b) { return a.price - b.price; });
+  else if (sortSelect.value === "price-desc") list.sort(function(a, b) { return b.price - a.price; });
+  else list.sort(function(a, b) { return a.id - b.id; });
+  return list;
+}
+
+function render() {
+  var list = getFilteredProducts();
+  resultCount.textContent = "عرض " + list.length + " من أصل " + PRODUCTS.length + " منتج";
+  if (!list.length) {
+    grid.innerHTML = '<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:24px;">لا توجد منتجات مطابقة لبحثك.</p>';
+    return;
+  }
+  grid.innerHTML = list.map(function(p) {
+    return (
+      '<article class="card">' +
+        '<div>' +
+          '<div class="meta-top"><span class="tag">' + p.dept + '</span><span>#' + p.id + '</span></div>' +
+          '<h3 class="title">' + p.name + '</h3>' +
+          '<p class="desc">' + p.short + '</p>' +
+        '</div>' +
+        '<div>' +
+          '<div class="price-box" style="margin-bottom:8px;">' +
+            '<div><span class="price-usd">' + p.price + '$</span>' + (p.oldPrice ? '<span class="price-old-note">' + p.oldPrice + '$</span>' : '') + '</div>' +
+            '<span class="price-syp">' + approxOldSyp(p.price) + '</span>' +
+          '</div>' +
+          '<div class="actions">' +
+            '<button class="btn btn-details" onclick="openDetails(' + p.id + ')">التفاصيل</button>' +
+            '<a class="btn btn-wa" href="' + waUrl(p) + '" target="_blank" rel="noopener">اطلب الآن</a>' +
+          '</div>' +
+        '</div>' +
+      '</article>'
+    );
+  }).join("");
+}
+
+function openDetails(id) {
+  var p = PRODUCTS.find(function(x) { return x.id === id; });
+  if (!p) return;
+  document.getElementById("modalTitle").textContent = "#" + p.id + " — " + p.name;
+  document.getElementById("modalMeta").textContent = p.dept + " ← " + p.sub;
+  document.getElementById("modalSpecs").innerHTML = p.specs.map(function(s) { return "<li>" + s + "</li>"; }).join("");
+  document.getElementById("modalPriceBox").innerHTML =
+    '<div><span class="price-usd">' + p.price + '$</span>' + (p.oldPrice ? '<span class="price-old-note">' + p.oldPrice + '$</span>' : '') + '</div>' +
+    '<span class="price-syp">' + approxOldSyp(p.price) + '</span>';
+  document.getElementById("modalWaBtn").href = waUrl(p);
+  document.getElementById("copyInfoBtn").onclick = function() {
+    var txt = p.name + " (#" + p.id + ")\n" + p.specs.join("\n");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function() { showToast("تم نسخ مواصفات المنتج"); });
+    }
+  };
+  modal.classList.add("open");
+}
+
+document.getElementById("closeModal").addEventListener("click", function() { modal.classList.remove("open"); });
+modal.addEventListener("click", function(e) { if (e.target === modal) modal.classList.remove("open"); });
+
+document.getElementById("categoryTabs").addEventListener("click", function(e) {
+  var btn = e.target.closest(".tab");
+  if (!btn) return;
+  document.querySelectorAll(".tab").forEach(function(t) { t.classList.remove("active"); });
+  btn.classList.add("active");
+  activeCat = btn.getAttribute("data-cat");
+  render();
+});
+
+searchInput.addEventListener("input", render);
+sortSelect.addEventListener("change", render);
+
+render();
+</script>
+</body>
+</html>
